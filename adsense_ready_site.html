@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My AdSense Site</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f5f5f5; color: #222; }
+    header, footer { background: #333; color: #fff; text-align: center; padding: 15px; }
+    nav a { color: #fff; margin: 0 10px; text-decoration: none; }
+    nav a:hover { text-decoration: underline; }
+    main { padding: 20px; max-width: 900px; margin: auto; background: #fff; }
+    h1, h2 { color: #444; }
+    .ad { margin: 20px 0; text-align: center; border: 1px dashed #aaa; padding: 10px; }
+    canvas { border: 2px solid #333; display: block; margin: 20px auto; background: #e9f7ef; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Welcome to My AdSense Site</h1>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#game">Game</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <a href="#privacy">Privacy Policy</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="home">
+      <h2>Home</h2>
+      <p>This is a simple website where you can play a fun game and also see ads integrated with Google AdSense.</p>
+    </section>
+
+    <div id="ad-top" class="ad">
+      <!-- Paste your AdSense ad code here -->
+      Top Ad Placeholder
+    </div>
+
+    <section id="game">
+      <h2>Coin Catcher Game</h2>
+      <canvas id="gameCanvas" width="400" height="500"></canvas>
+      <p style="text-align:center;">Use the arrow keys to move the basket and catch the coins.</p>
+    </section>
+
+    <div id="ad-bottom" class="ad">
+      <!-- Paste your AdSense ad code here -->
+      Bottom Ad Placeholder
+    </div>
+
+    <section id="about">
+      <h2>About Us</h2>
+      <p>We are a small team creating fun web apps and games. Our goal is to entertain and engage users worldwide.</p>
+    </section>
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>For any questions or collaboration, email us at: <strong>example@email.com</strong></p>
+    </section>
+
+    <section id="privacy">
+      <h2>Privacy Policy</h2>
+      <p>We respect your privacy. We do not store personal information. Our website only uses Google AdSense for ads.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 My AdSense Site. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    let basket = { x: 160, y: 450, width: 80, height: 20, speed: 20 };
+    let coin = { x: Math.random() * 370, y: 0, radius: 10, speed: 3 };
+    let score = 0;
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft" && basket.x > 0) basket.x -= basket.speed;
+      if (e.key === "ArrowRight" && basket.x < canvas.width - basket.width) basket.x += basket.speed;
+    });
+
+    function updateGame() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Basket
+      ctx.fillStyle = "brown";
+      ctx.fillRect(basket.x, basket.y, basket.width, basket.height);
+
+      // Coin
+      ctx.beginPath();
+      ctx.arc(coin.x, coin.y, coin.radius, 0, Math.PI * 2);
+      ctx.fillStyle = "gold";
+      ctx.fill();
+      ctx.closePath();
+
+      coin.y += coin.speed;
+      if (coin.y > canvas.height) {
+        coin.x = Math.random() * (canvas.width - 20) + 10;
+        coin.y = 0;
+      }
+
+      if (
+        coin.y + coin.radius > basket.y &&
+        coin.x > basket.x &&
+        coin.x < basket.x + basket.width
+      ) {
+        score++;
+        coin.x = Math.random() * (canvas.width - 20) + 10;
+        coin.y = 0;
+      }
+
+      ctx.fillStyle = "black";
+      ctx.font = "18px Arial";
+      ctx.fillText("Score: " + score, 10, 20);
+
+      requestAnimationFrame(updateGame);
+    }
+
+    updateGame();
+  </script>
+</body>
+</html>
